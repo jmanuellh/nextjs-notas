@@ -1,4 +1,5 @@
 import TablaNotas from './TablaNotas';
+import AgregarNota from './AgregarNota';
 
 const Notas = () => {
     return (
@@ -6,6 +7,7 @@ const Notas = () => {
             <h1>
                 Notas
             </h1>
+            {/* <AgregarNota /> */}
             <TablaNotas />
         </div>
     );
