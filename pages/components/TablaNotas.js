@@ -1,28 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const urlBase = "https://erpbackaspnetcore31.azurewebsites.net/api/notas";
 
 
-const NotasItem = (props) => {
-    const nota = props.nota;
-    return (
-    <tr>
-        <td>{nota.titulo}</td>
-        <td>{nota.contenido}</td>
-        <td>
-            <button>Editar</button>
-            <button>Eliminar</button>
-        </td>
-    </tr>);
-}
 
-const NotasLista = (props) => {
-    const notas = props.notas;
-    const lista = notas.map((nota, index) => (
-        <NotasItem  key={nota.id} nota={nota} />
-    ));
-    return lista;
-}
+
 
 
 
@@ -65,6 +48,37 @@ const TablaNotas = () => {
                 </form>
             </div>
         )
+    }
+
+    const eliminarNota = (id, index) => {
+        axios.delete(urlBase + "/" + id).then(r => {
+            let nuevasNotas = [...notas];
+            // const indexNota = notas.findIndex(nota => nota.id === r.data.id);
+            nuevasNotas.splice(index, 1)
+            setNotas(nuevasNotas);
+        })
+    }
+
+    const NotasItem = (props) => {
+        const nota = props.nota;
+        const index = props.index;
+        return (
+        <tr>
+            <td>{nota.titulo}</td>
+            <td>{nota.contenido}</td>
+            <td>
+                <button>Editar</button>
+                <button onClick={() => eliminarNota(nota.id, index)}>Eliminar</button>
+            </td>
+        </tr>);
+    }
+    
+    const NotasLista = (props) => {
+        const notas = props.notas;
+        const lista = notas.map((nota, index) => (
+            <NotasItem  key={nota.id} nota={nota} index={index} />
+        ));
+        return lista;
     }
 
     const [notas, setNotas] = useState([]);
